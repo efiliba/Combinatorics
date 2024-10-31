@@ -1,32 +1,31 @@
-"use strict";
+export const numericalEnumerations = (from: Uint8Array, kinds: number) => {
+  let columns = kinds;                                              // Number of indices to group the grids by
+  let rows = from ? from[from.length - 1] / columns + 1 >> 0 : 1;   //   e.g. 4 suits * 13 kinds
+  // Extra row and column for totals used in optimisations
+  let fromGrid = new Array<Uint8Array>(rows + 1);                   // 2D grid of indices to select from
+  let givenGrid = new Array<Uint8Array>(rows + 1);                  // Indices that must be included in results
 
-let numericalEnumerations = function () {
-  let columns;                                                        // Number of indices to group the grids by
-  let rows;                                                           //   e.g. 4 suits * 13 kinds
-  let fromGrid;                                                       // 2D grid of indices to select from
-  let givenGrid;                                                      // Indices that must be included in results
+  let pick: number;
+  const numberToPick = 5;                                           // Number of items to select
+  const numberToCycle = 1;                                          // Number of items to cycle e.g. J Q K A 2
 
-  let pick;
-  const numberToPick = 5;                                             // Number of items to select
-  const numberToCycle = 1;                                            // Number of items to cycle e.g. J Q K A 2
+  // const setup = (from: Uint8Array, kinds: number) => {            // Array of indices to select from, grouped by kinds
+  //   columns = kinds;
+  //   rows = from ? from[from.length - 1] / columns + 1 >> 0 : 1;
 
-  const setup = (from, kinds) => {                                    // Array of indices to select from, grouped by kinds
-    columns = kinds;
-    rows = from ? from[from.length - 1] / columns + 1 >> 0 : 1;
+  //   fromGrid = new Array(rows + 1);                                 
+  //   givenGrid = new Array(rows + 1);
+  for (let index = 0; index < rows + 1; index++) {
+    fromGrid[index] = new Uint8Array(columns + 1);
+    givenGrid[index] = new Uint8Array(columns + 1);
+  }
 
-    fromGrid = new Array(rows + 1);                                 // Extra row and column for totals used in optimisations
-    givenGrid = new Array(rows + 1);
-    for (let index = 0; index < rows + 1; index++) {
-      fromGrid[index] = new Uint8Array(columns + 1);
-      givenGrid[index] = new Uint8Array(columns + 1);
-    }
-
-    from.forEach(num => {                                           // Values in fromGrid set based on indices in passed array
-      fromGrid[num / columns >> 0][num % columns]++;
-      fromGrid[rows][num % columns]++;
-      fromGrid[num / columns >> 0][columns]++;
-    });
-  };
+  from.forEach(num => {                                           // Values in fromGrid set based on indices in passed array
+    fromGrid[num / columns >> 0][num % columns]++;
+    fromGrid[rows][num % columns]++;
+    fromGrid[num / columns >> 0][columns]++;
+  });
+  // };
 
   const setGiven = (given) => {                                       // Optionaly set indices that must be included in results
     if (given) {
@@ -227,12 +226,12 @@ let numericalEnumerations = function () {
     return total;
   };
 
-  module.exports = {
-    setup,                                                          // Array of indices to select from, grouped by kinds
+  return {
+    // setup,                                                          // Array of indices to select from, grouped by kinds
     setGiven,                                                       // Indices that must be included in results
     numberOfWays,                                                   // Select 'kinds' e.g. [3, 2] 3 of a Kind and 2 of a kind
     numberOfStraights,                                              // Includes Straight Flushes and Royal Flushes
     numberOfFlushes,                                                // Includes Straight Flushes and Royal Flushes
     numberOfStraightFlushes                                         // Includes Royal Flushes
   };
-}();
+};

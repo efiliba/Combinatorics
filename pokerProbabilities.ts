@@ -1,13 +1,15 @@
-var enumerations = require('./numericalEnumerations.js');
+// var enumerations = require('./numericalEnumerations.js');
+import { numericalEnumerations } from './numericalEnumerations.ts';
 
-var numberOfDecks = 1;
-var cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);   // TypedArray [0, 1, 2, ... 51] * numberOfDecks
+const numberOfDecks = 1;
+const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);   // TypedArray [0, 1, 2, ... 51] * numberOfDecks
 
-enumerations.setup(cards, 13);                                          // 13 different kinds of cards i.e. A, 2, 3, ... K
+const enumerations = numericalEnumerations(cards, 13);
+// enumerations.setup(cards, 13);                                          // 13 different kinds of cards i.e. A, 2, 3, ... K
 
 //enumerations.setGiven([0, 12]);                                       // E.g. given A K (suited)
 
-var hands = {
+const hands = {
   straightFlushes: enumerations.numberOfStraightFlushes(),            //      40
   flushes: enumerations.numberOfFlushes(),                            //    5148
   straights: enumerations.numberOfStraights(),                        //   10240
