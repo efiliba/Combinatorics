@@ -1,9 +1,9 @@
 import { describe } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 
-import { numberOfBitsSet, bitwiseOR, onlyOption, containingBitIndex } from "./BitUtilities.ts";
+import { numberOfBitsSet, bitwiseOR, onlyOption, containingBitIndex } from "./BitUtils.ts";
 
-describe("BitUtilities", () => {
+describe("BitUtils", () => {
   Deno.test("counts the number of bits set", () => {
     // Population count i.e. 333 = 101001101 i.e. 5 bits set
     expect(numberOfBitsSet(333)).toBe(5);

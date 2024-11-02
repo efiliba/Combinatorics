@@ -1,6 +1,6 @@
 // Create a list of the number of bits set at each corresponding index, upto the maximum number of items that may be selected
 // [ 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, ... ]
-// i.e. [0] => 0, [1] => 1, [2] => 1, [3] => 2, ..., [333] => 5 (i.e. 101001101 has 5 bits set)
+// i.e. [0] => 0, [1] => 1, [2] => 1, [3] => 2, ..., [333] => 5, ... (i.e. 333 === 101001101 has 5 bits set)
 const createSetBitsLookup = (n: number) => {
   const nextValues = (x: number) => [x, x + 1, x + 1, x + 2];
 
@@ -15,17 +15,17 @@ const createSetBitsLookup = (n: number) => {
 };
 
 // Create 2D bit flag arrays, indexed by population counts
-// [  0: ,
+// [  0: undefined,
 //    1: [ 1, 2, 4, 8 ],
 //    2: [ 3, 5, 6, 9, 10, 12 ],
-//    3: [ 7, 11, 13, 14 ]
+//    3: [ 7, 11, 13, 14 ]        i.e. decimal numbers 7, 11, 13, 14 each have 3 bits set 
 //    ...
 // ]
-const createIndexedPopulationCountsTable = (maxItemsSelectFrom: number) => {
-  const setBitsLookup = createSetBitsLookup(maxItemsSelectFrom);
+const createIndexedPopulationCountsTable = (maxItemsToSelectFrom: number) => {
+  const setBitsLookup = createSetBitsLookup(maxItemsToSelectFrom);
 
   const populationCountsTable: number[][] = [];
-  for (let index = 1; index <= maxItemsSelectFrom; index++) {
+  for (let index = 1; index <= maxItemsToSelectFrom; index++) {
     populationCountsTable[index] = [];
     for (let bit = 0; bit < setBitsLookup.length; bit++) {  // Get indices of items with respective choices
       if (setBitsLookup[bit] === index) {
@@ -43,23 +43,27 @@ const createIndexedPopulationCountsTable = (maxItemsSelectFrom: number) => {
 //      returns: [ 'a', 'c' ] i.e. a = 1, b = 2, c = 4
 const selectElements = <T>(from: T[], bitFlag: number) => from.filter((_, index) => 1 << index & bitFlag);
 
-const enumerateCombinations = (setBitsLookup: number[][]) => <T>(from: T[], pick: number) => {
-  let combinations: T[][] = [];
+const enumerateCombinations = (setBitsLookup: number[][]) =>
+  <T>(from: T[]) =>
+    (pick: number) => {
+      const combinations: T[][] = [];
 
-  // Get bit flags used to select the combinations from the lookup table, up to the number of items to select from
-  const setBits = 1 << from.length;
-  const lookupTable = setBitsLookup[pick];
+      // Get bit flags used to select the combinations from the lookup table, up to the number of items to select from
+      const setBits = 1 << from.length;
+      const lookupTable = setBitsLookup[pick];
 
-  for (let index = 0; index < lookupTable.length; index++) {
-    if (lookupTable[index] < setBits) {
-      combinations.push(selectElements(from, lookupTable[index]));
-    }
-  }
+      for (let index = 0; index < lookupTable.length; index++) {
+        if (lookupTable[index] < setBits) {
+          combinations.push(selectElements(from, lookupTable[index]));
+        }
+      }
 
-  return combinations;
+      return combinations;
+    };
+
+export const combinationsReusingIndex = (maxItemsToSelectFrom: number) => {
+  const populationCounts = createIndexedPopulationCountsTable(maxItemsToSelectFrom);
+  return enumerateCombinations(populationCounts);
 };
 
-export const combinations = (maxItemsSelectFrom: number) =>
-  enumerateCombinations(createIndexedPopulationCountsTable(maxItemsSelectFrom));
-
-export const C = <T>(from: T[], pick: number) => combinations(from.length)(from, pick);
+export const combinations = <T>(from: T[], pick: number) => combinationsReusingIndex(from.length)(from)(pick);

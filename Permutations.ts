@@ -13,11 +13,11 @@ const removeItemAtIndex = <T>(items: T[], index: number) => {
   return remainingItems;
 };
 
-export const P = <T>(from: T[]): T[] | T[][] =>
+export const permutations = <T>(from: T[]): T[] | T[][] =>
   from.length === 1
     ? from
-    : from.reduce((permutations, item, index) =>
+    : from.reduce((items, item, index) =>
       [
-        ...permutations,
-        ...distribute(item, P(removeItemAtIndex(from, index)))
+        ...items,
+        ...distribute(item, permutations(removeItemAtIndex(from, index)))
       ], [] as T[][]);
