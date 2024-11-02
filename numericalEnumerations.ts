@@ -1,6 +1,6 @@
 // Organise elements to select 'from' into a 2D grid of indices by the number of 'columns' required.
 // e.g. 13 (columns) 'kinds' by 4 suits in a deck of cards
-export const numericalEnumerations = (from: Uint8Array, given: Uint8Array, columns: number) => {
+export const numericalEnumerations = (from: Uint8Array, columns: number, given = new Uint8Array()) => {
   const rows = from ? from[from.length - 1] / columns + 1 >> 0 : 1;
   // Extra row and column for totals used in optimisations
   const fromGrid = new Array<Uint8Array>(rows + 1);

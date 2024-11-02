@@ -1,5 +1,6 @@
 const choose = (n: number): number => n <= 1 ? 1 : n * choose(n - 1);
 
+// C(n, k) = n!/[(n-k)!k!]
 export const C = (n: number, k: number) => {
   if (k > n) {
     return 0;

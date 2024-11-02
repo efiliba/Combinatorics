@@ -9,7 +9,7 @@ describe("numberOfWays", () => {
     // TypedArray [0, 1, 2, ... 51] * numberOfDecks
     const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
 
-    const select = numberOfWays(cards, 13, 5);  // 13 'kinds' of cards, with 5 card hands
+    const { select } = numberOfWays(cards, 13, 5);  // 13 'kinds' of cards, with 5 card hands
 
     Deno.test("four of a kinds", () => {
       // Select 4 of a kind and then explicitly select 1 of a kind from the remaining cards
@@ -45,11 +45,11 @@ describe("numberOfWays", () => {
 
   describe("Standard deck of cards, with hand already containing an Ace King", () => {
     const cards = new Uint8Array(52)
-      .map((_, index) => index % 52)
+      .map((_, index) => index)
       .filter(card => card !== 0 && card !== 12)                    // Leave out 0 and 12 as they are 'given'
 
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
-    const select = numberOfWays(cards, 13, 5, new Uint8Array([0, 12]));                        // 13 'kinds' of cards, with 5 card hands
+    const { select } = numberOfWays(cards, 13, 5, new Uint8Array([0, 12]));                        // 13 'kinds' of cards, with 5 card hands
 
     Deno.test("full Houses", () => {
       // Select 2 Aces from 3 remaining = C(3, 2) = 3 and 1 King from 3 remaining = C(3, 1) = 3
@@ -61,6 +61,22 @@ describe("numberOfWays", () => {
 
     Deno.test("four of a kind", () => {
       expect(select(4)).toEqual(2); // Only options for remaining cards are 3 Aces or 3 Kings
+    });
+  });
+
+  describe("3 dice", () => {
+    //  0  1  2  4  5  6
+    //  7  8  9 10 11 12
+    // 13 14 15 16 17 18
+    const dice = new Uint8Array(18).map((_, index) => index);
+    const { select } = numberOfWays(dice, 6);
+
+    Deno.test("all dice have the same value i.e. 3 of a kind", () => {
+      expect(select(3)).toEqual(6);
+    });
+
+    Deno.test("impossible scenario - select 4 of the same kind out of a maximum of 3", () => {
+      expect(select(4)).toEqual(0);
     });
   });
 });

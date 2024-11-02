@@ -69,14 +69,25 @@ const repeatedPicks = (pick: Uint8Array) => {
   return total;
 };
 
-export const numberOfWays = (from: Uint8Array, numberOfColumns: number, numberToPick: number, given = new Uint8Array()) => {
-  const { columns, rows, fromGrid, givenGrid } = numericalEnumerations(from, given, numberOfColumns);
+export const numberOfWays = (
+  from: Uint8Array,
+  numberOfColumns: number,
+  numberToPick = from.length / numberOfColumns, // Default - select all in column
+  given = new Uint8Array()
+) => {
+  const { columns, rows, fromGrid, givenGrid } = numericalEnumerations(from, numberOfColumns, given);
 
-  // Number of ways to select n1, n2, ... 'kinds' e.g. [3, 2] === 3 of a kind and 2 of a kind
-  return (args: number | number[]) => {
-    const pick = formatPicked(numberToPick, args);
-    const combinations = count(columns, rows, fromGrid, givenGrid, pick);
+  return {
+    columns,
+    rows,
+    fromGrid,
+    givenGrid,
+    // Number of ways to select n1, n2, ... 'kinds' e.g. [3, 2] === 3 of a kind and 2 of a kind
+    select: (args: number | number[]) => {
+      const pick = formatPicked(numberToPick, args);
+      const combinations = count(columns, rows, fromGrid, givenGrid, pick);
 
-    return combinations(numberToPick - givenGrid[rows][columns], 0) / repeatedPicks(pick);
+      return combinations(numberToPick - givenGrid[rows][columns], 0) / repeatedPicks(pick);
+    }
   };
 };
