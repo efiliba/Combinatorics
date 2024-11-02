@@ -3,8 +3,8 @@ import { C } from "./Utils.ts";
 type PokerEnumerations = {
   columns: number;                        // Number of indices to group the grids by i.e. 13 'kinds' in a deck of cards
   rows: number;
-  fromGrid: Uint8Array[];
-  givenGrid: Uint8Array[];
+  fromGrid: Uint8Array[];                 // 2D grid of options to select from
+  givenGrid: Uint8Array[];                // 2D grid of indices that must be included in results
   numberToPick: number;                   // Number of items to select e.g. 5 for a hand of cards
   cycle?: number;                         // Number of items to cycle e.g. J Q K A 2
 };

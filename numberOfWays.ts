@@ -82,6 +82,7 @@ export const numberOfWays = (
     rows,
     fromGrid,
     givenGrid,
+    numberToPick,
     // Number of ways to select n1, n2, ... 'kinds' e.g. [3, 2] === 3 of a kind and 2 of a kind
     select: (args: number | number[]) => {
       const pick = formatPicked(numberToPick, args);

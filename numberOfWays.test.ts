@@ -44,12 +44,13 @@ describe("numberOfWays", () => {
   });
 
   describe("Standard deck of cards, with hand already containing an Ace King", () => {
+    const given = new Uint8Array([0, 12]);                // Suited Ace and King at indices 0 and 12
     const cards = new Uint8Array(52)
       .map((_, index) => index)
-      .filter(card => card !== 0 && card !== 12)                    // Leave out 0 and 12 as they are 'given'
+      .filter(card => !given.includes(card))              // Leave out 0 and 12 as they are 'given'
 
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
-    const { select } = numberOfWays(cards, 13, 5, new Uint8Array([0, 12]));                        // 13 'kinds' of cards, with 5 card hands
+    const { select } = numberOfWays(cards, 13, 5, given); // 13 'kinds' of cards, with 5 card hands
 
     Deno.test("full Houses", () => {
       // Select 2 Aces from 3 remaining = C(3, 2) = 3 and 1 King from 3 remaining = C(3, 1) = 3
@@ -61,6 +62,17 @@ describe("numberOfWays", () => {
 
     Deno.test("four of a kind", () => {
       expect(select(4)).toEqual(2); // Only options for remaining cards are 3 Aces or 3 Kings
+    });
+  });
+
+  describe("2 decks of cards", () => {
+    const numberOfDecks = 2;
+    const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
+
+    const { select } = numberOfWays(cards, 13, 5);  // 13 'kinds' of cards, with 5 card hands
+
+    Deno.test("5 of a kind", () => {
+      expect(select(5)).toEqual(728);
     });
   });
 
