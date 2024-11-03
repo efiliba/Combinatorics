@@ -1,0 +1,22 @@
+{
+  "name": "combinatorics",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "Select combinations or permutations of items in a list, or the number of ways of selecting items",
+  "keywords": ["combinatorics", "combinations", "permutations", "number of ways", "odds calculations", "bit utilities"],
+  "homepage": "https://github.com/efiliba/Combinatorics",
+  "bugs": {
+    "url": "https://github.com/efiliba/Combinatorics/issues"
+  },
+  "author": "Eli Filiba",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efiliba/Combinatorics.git"
+  },
+  "files": ["dist"],
+  "type": "module",
+  "scripts": {
+    "test": "deno test",
+    "coverage": "deno test --coverage=cov_profile && deno coverage cov_profile"
+  }
+}

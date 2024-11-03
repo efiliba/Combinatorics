@@ -1,9 +1,13 @@
 {
   "name": "@elf/combinatorics",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "exports": "./index.ts",
   "publish": {
-    "include": ["*.ts"],
+    "include": [
+      "LICENSE",
+      "README.md",
+      "*.ts"
+    ],
     "exclude": ["*.test.ts"]
   }
 }

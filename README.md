@@ -128,7 +128,7 @@ xorBits = [1, 2, 4, 8]; // 0001 ^ 0010 ^ 0100 ^ 1000 = 1111
 onlyOption(xorBits).found === false; // All bits set i.e. singulare bit required
 
 xorBits = [5, 6, 9, 12]; // 0101 ^ 0110 ^ 1001 ^ 1100 = 0010
-const options: IOnlyOptionResult = Solver.BitUtilities.onlyOption(xorBits);
+const options = onlyOption(xorBits);
 options.found === true; // Only option found and at bit 2
 options.bit === 2;
 
