@@ -9,7 +9,11 @@ type PokerEnumerations = {
   cycle?: number;                         // Number of items to cycle e.g. J Q K A 2
 };
 
-export const pokerEnumerations = ({ columns, rows, fromGrid, givenGrid, numberToPick, cycle = 1 }: PokerEnumerations) => {
+export const pokerEnumerations = ({ columns, rows, fromGrid, givenGrid, numberToPick, cycle = 1 }: PokerEnumerations): {
+  numberOfStraights: () => number;
+  numberOfFlushes: () => number;
+  numberOfStraightFlushes: () => number;
+} => {
   // Count number of consecutive indices within the given range
   const countConsecutive = (fromArr: Uint8Array, givenArr: Uint8Array, fromPos: number, toPos: number) => {
     let total = 0;

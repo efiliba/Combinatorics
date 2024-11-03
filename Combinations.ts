@@ -61,9 +61,11 @@ const enumerateCombinations = (setBitsLookup: number[][]) =>
       return combinations;
     };
 
-export const combinationsReusingIndex = (maxItemsToSelectFrom: number) => {
+export const combinationsReusingIndex = (maxItemsToSelectFrom: number):
+  <T>(from: T[]) => (pick: number) => T[][] => {
   const populationCounts = createIndexedPopulationCountsTable(maxItemsToSelectFrom);
   return enumerateCombinations(populationCounts);
 };
 
-export const combinations = <T>(from: T[], pick: number) => combinationsReusingIndex(from.length)(from)(pick);
+export const combinations = <T>(from: T[], pick: number): T[][] =>
+  combinationsReusingIndex(from.length)(from)(pick);

@@ -73,8 +73,15 @@ export const numberOfWays = (
   from: Uint8Array,
   numberOfColumns: number,
   numberToPick = from.length / numberOfColumns, // Default - select all in column
-  given = new Uint8Array()
-) => {
+  given: Uint8Array = new Uint8Array()
+): {
+  columns: number;
+  rows: number;
+  fromGrid: Uint8Array[];
+  givenGrid: Uint8Array[];
+  numberToPick: number;
+  select: (args: number | number[]) => number;
+} => {
   const { columns, rows, fromGrid, givenGrid } = numericalEnumerations(from, numberOfColumns, given);
 
   return {

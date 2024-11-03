@@ -1,0 +1,9 @@
+{
+  "name": "@elf/combinatorics",
+  "version": "0.1.0",
+  "exports": "./index.ts",
+  "publish": {
+    "include": ["*.ts"],
+    "exclude": ["*.test.ts"]
+  }
+}
