@@ -1,9 +1,9 @@
 import { describe } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 
-import { numericalEnumerations } from "./numericalEnumerations.ts";
+import { IndicesBuilder } from "./IndicesBuilder.ts";
+import { numberOfWaysUsingIndices } from "./numberOfWays.ts";
 import { pokerEnumerations } from "./pokerEnumerations.ts";
-import { numberOfWays } from "./numberOfWays.ts";
 
 describe("pokerEnumerations", () => {
   describe("Number of poker specific hands", () => {
@@ -11,10 +11,7 @@ describe("pokerEnumerations", () => {
     // TypedArray [0, 1, 2, ... 51] * numberOfDecks
     const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
 
-    const enumerations = pokerEnumerations({
-      ...numericalEnumerations(cards, 13),                        // 13 'kinds' of cards
-      numberToPick: 5
-    });
+    const enumerations = pokerEnumerations(IndicesBuilder(cards, 13));  // 13 'kinds' of cards
 
     Deno.test("numberOfStraightFlushes", () => {
       expect(enumerations.numberOfStraightFlushes()).toEqual(40); // 36 + 4 (royal flushes)
@@ -32,8 +29,9 @@ describe("pokerEnumerations", () => {
   describe("All poker hands", () => {
     const cards = new Uint8Array(52).map((_, index) => index % 52);
 
-    const { select, ...rest } = numberOfWays(cards, 13, 5); // 13 'kinds' of cards, with 5 card hands
-    const enumerations = pokerEnumerations(rest);
+    const indices = IndicesBuilder(cards, 13); // 13 'kinds' of cards
+    const select = numberOfWaysUsingIndices({ ...indices, numberToPick: 5 });
+    const enumerations = pokerEnumerations(indices);
 
     const hands = {
       royalFlushes: 4,
@@ -49,18 +47,6 @@ describe("pokerEnumerations", () => {
     };
 
     const actual = {
-      straightFlushes: 36,
-      flushes: 5108,
-      straights: 10200,
-      fourOfAKinds: 624,
-      fullHouses: 3744,
-      trips: 54912,
-      twoPair: 123552,
-      pairs: 1098240,
-      nothing: 1302540  // 1317888 - 10240 - 5148 + 40, re-add straight flushes, included in both straights and flushes
-    };
-
-    const expected = {
       straightFlushes: hands.straightFlushes - hands.royalFlushes,  //      36
       flushes: hands.flushes - hands.straightFlushes,               //    5108
       straights: hands.straights - hands.straightFlushes,           //   10200
@@ -72,6 +58,18 @@ describe("pokerEnumerations", () => {
       nothing: hands.noPairs - hands.straights - hands.flushes + hands.straightFlushes  // 1302540
     };
 
+    const expected = {
+      straightFlushes: 36,
+      flushes: 5108,
+      straights: 10200,
+      fourOfAKinds: 624,
+      fullHouses: 3744,
+      trips: 54912,
+      twoPair: 123552,
+      pairs: 1098240,
+      nothing: 1302540  // 1317888 - 10240 - 5148 + 40, re-add straight flushes, included in both straights and flushes
+    };
+
     expect(actual).toEqual(expected);
   });
 
@@ -80,10 +78,8 @@ describe("pokerEnumerations", () => {
       .map((_, index) => index)
       .filter(card => card !== 0 && card !== 12)                    // Leave out 0 and 12 as they are 'given'
 
-    const enumerations = pokerEnumerations({
-      ...numericalEnumerations(cards, 13, new Uint8Array([0, 12])), // 13 'kinds' of cards, given A K                      
-      numberToPick: 5
-    });
+    // 13 'kinds' of cards, given A K
+    const enumerations = pokerEnumerations(IndicesBuilder(cards, 13, new Uint8Array([0, 12])));
 
     Deno.test("numberOfStraightFlushes", () => {
       expect(enumerations.numberOfStraightFlushes()).toEqual(1);    // Only 1 with given A K
@@ -103,11 +99,7 @@ describe("pokerEnumerations", () => {
       .map((_, index) => index)
       .filter(card => card !== 0 && card !== 12)                    // Leave out 0 and 12 as they are 'given'
 
-    const enumerations = pokerEnumerations({
-      ...numericalEnumerations(cards, 13, new Uint8Array([0, 12])), // 13 'kinds' of cards, given A K                      
-      numberToPick: 5,
-      cycle: 5
-    });
+    const enumerations = pokerEnumerations({ ...IndicesBuilder(cards, 13, new Uint8Array([0, 12])), cycle: 5 });
 
     Deno.test("numberOfStraightFlushes", () => {
       // A K Q J 10
@@ -131,10 +123,8 @@ describe("pokerEnumerations", () => {
       .map((_, index) => index)
       .filter(card => card !== 0 && card !== 13)                    // Leave out 2 Aces 'given'
 
-    const enumerations = pokerEnumerations({
-      ...numericalEnumerations(cards, 13, new Uint8Array([0, 13])), // 13 'kinds' of cards, given 2 Aces                      
-      numberToPick: 5
-    });
+    // 13 'kinds' of cards, given 2 Aces
+    const enumerations = pokerEnumerations(IndicesBuilder(cards, 13, new Uint8Array([0, 13])));
 
     Deno.test("numberOfStraightFlushes", () => {
       expect(enumerations.numberOfStraightFlushes()).toEqual(0);
@@ -152,13 +142,10 @@ describe("pokerEnumerations", () => {
   describe("Select more than available, but cards overlap, and given Ace", () => {
     const cards = new Uint8Array(5)
       .map((_, index) => index)
-      .filter(card => card !== 0)                                   // Leave out Ace 'given'
+      .filter(card => card !== 0)                                   // Leave out 'given' Ace
 
-    const enumerations = pokerEnumerations({
-      ...numericalEnumerations(cards, 5, new Uint8Array([0])),      // 5 'kinds' of cards, given an Ace                      
-      numberToPick: 6,
-      cycle: 5
-    });
+    // 5 'kinds' of cards but select 6, given an Ace
+    const enumerations = pokerEnumerations({ ...IndicesBuilder(cards, 5, new Uint8Array([0])), numberToPick: 6, cycle: 5 });
 
     Deno.test("numberOfStraightFlushes", () => {
       expect(enumerations.numberOfStraightFlushes()).toEqual(6);

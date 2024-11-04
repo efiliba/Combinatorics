@@ -1,5 +1,5 @@
 import { C } from "./Utils.ts";
-import { numericalEnumerations } from "./numericalEnumerations.ts";
+import { IndicesBuilder } from "./IndicesBuilder.ts";
 
 // Pad args e.g. 4 => [4, 1] i.e. pick 4 of a kind and then 1 of a kind from remaining options
 const formatPicked = (numberToPick: number, args: number | number[]) => {
@@ -69,33 +69,24 @@ const repeatedPicks = (pick: Uint8Array) => {
   return total;
 };
 
+export const numberOfWaysUsingIndices = ({ columns, rows, fromGrid, givenGrid, numberToPick = rows }: {
+  columns: number;
+  rows: number;
+  fromGrid: Uint8Array[];
+  givenGrid: Uint8Array[];
+  numberToPick?: number;
+}): (args: number | number[]) => number =>
+  (args: number | number[]) => {
+    const pick = formatPicked(numberToPick, args);
+    const combinations = count(columns, rows, fromGrid, givenGrid, pick);
+
+    return combinations(numberToPick - givenGrid[rows][columns], 0) / repeatedPicks(pick);
+  };
+
 export const numberOfWays = (
   from: Uint8Array,
   numberOfColumns: number,
   numberToPick = from.length / numberOfColumns, // Default - select all in column
   given: Uint8Array = new Uint8Array()
-): {
-  columns: number;
-  rows: number;
-  fromGrid: Uint8Array[];
-  givenGrid: Uint8Array[];
-  numberToPick: number;
-  select: (args: number | number[]) => number;
-} => {
-  const { columns, rows, fromGrid, givenGrid } = numericalEnumerations(from, numberOfColumns, given);
-
-  return {
-    columns,
-    rows,
-    fromGrid,
-    givenGrid,
-    numberToPick,
-    // Number of ways to select n1, n2, ... 'kinds' e.g. [3, 2] === 3 of a kind and 2 of a kind
-    select: (args: number | number[]) => {
-      const pick = formatPicked(numberToPick, args);
-      const combinations = count(columns, rows, fromGrid, givenGrid, pick);
-
-      return combinations(numberToPick - givenGrid[rows][columns], 0) / repeatedPicks(pick);
-    }
-  };
-};
+): (args: number | number[]) => number =>
+  numberOfWaysUsingIndices({ ...IndicesBuilder(from, numberOfColumns, given), numberToPick })

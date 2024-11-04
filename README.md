@@ -56,7 +56,7 @@ const options = permutations(from);
 // ]
 ```
 
-## numberOfWays.ts
+## NumericalEnumerations.ts
 
 Get the total number of ways that distinct items can be selected (order not
 important).
@@ -66,7 +66,7 @@ and King, determine the number of 4 of a kinds. I.e. so you only have 3 cards
 left to draw.
 
 ```TypeScript
-import { numberOfWays } from "numberOfWays";
+import { NumericalEnumerations } from "NumericalEnumerations";
 
 const given = new Uint8Array([0, 12]); // Suited Ace and King at indices 0 and 12
 
@@ -79,7 +79,7 @@ const cards = new Uint8Array(52 * numberOfDecks)
 
 // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits.
 // 5 card hands with the 'given' suited A K.
-const { select } = numberOfWays(cards, 13, 5, given);
+const { select } = NumericalEnumerations(cards, 13, 5, given);
 
 const total4ofAKinds = select(4); // Number of ways to select 4 of the same kind
 console.log(total4ofAKinds); // 2 -> The only options are 3 Aces or 3 Kings

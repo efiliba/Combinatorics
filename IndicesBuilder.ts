@@ -1,6 +1,15 @@
-// Organise elements to select 'from' into a 2D grid of indices by the number of 'columns' required.
-// e.g. 13 (columns) 'kinds' by 4 suits in a deck of cards
-export const numericalEnumerations = (from: Uint8Array, columns: number, given: Uint8Array = new Uint8Array()): {
+/**
+ * Internal function to organise options to select 'from' into a 2D grid of indices
+ * 
+ * @param from indices to select 'from'
+ * - Example standard deck of cards: new Uint8Array(52).map((_, index) => index)
+ * @param columns number of 'columns' to partition 'from' indices
+ * - Example 13 'kinds' of cards
+ * @param given optional indices that must be included in calculations
+ * - Example 'given' suited (on same row) Ace King: new Uint8Array([0, 12]))
+ * @returns internal grids (column & row) of the indices to pick 'from' and those 'given'
+ */
+export const IndicesBuilder = (from: Uint8Array, columns: number, given: Uint8Array = new Uint8Array()): {
   columns: number;
   rows: number;
   fromGrid: Uint8Array[];
