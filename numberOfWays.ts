@@ -83,10 +83,26 @@ export const numberOfWaysUsingIndices = ({ columns, rows, fromGrid, givenGrid, n
     return combinations(numberToPick - givenGrid[rows][columns], 0) / repeatedPicks(pick);
   };
 
+/**
+ * Get the total number of ways that items can be selected (order not important)
+ * @param from - Uint8Array of items to select 'from'
+ * - Example decks of cards new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52)
+ * -   Duplicate values to add multiples
+ * -   Leave out unwanted items
+ * @param numberOfColumns - group items by 'kinds'
+ * - Example 13 for a standard deck of cards
+ * @param numberToPick - number of items to pick
+ * - Example 5 for a card 'hand'
+ * @param given (optional) - Uint8Array of items that must be included
+ * - Example 'given' suited (on same row) Ace King: new Uint8Array([0, 12]))
+ * @returns function that returns the number of ways of selecting n1 items, followed by n2 items, ...
+ * - Example number of FullHouses select([3, 2])
+ * --  Select 3 of a kind and then 2 of a kind from the remaining cards
+ */
 export const numberOfWays = (
   from: Uint8Array,
   numberOfColumns: number,
-  numberToPick = from.length / numberOfColumns, // Default - select all in column
+  numberToPick = from.length / numberOfColumns, // Default - select all i.e. row
   given: Uint8Array = new Uint8Array()
 ): (args: number | number[]) => number =>
-  numberOfWaysUsingIndices({ ...IndicesBuilder(from, numberOfColumns, given), numberToPick })
+  numberOfWaysUsingIndices({ ...IndicesBuilder(from, numberOfColumns, given), numberToPick });
