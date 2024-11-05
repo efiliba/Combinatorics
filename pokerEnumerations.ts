@@ -14,11 +14,24 @@ function isGiven(givenOrNumberOfDecks: number | number[]): givenOrNumberOfDecks 
   return typeof givenOrNumberOfDecks === "object";
 }
 
+/**
+ * Utility function to create decks of cards with 'given' cards
+ * @param given An array of items that must be excluded from the decks
+ * @param numberOfDecks Optional number of decks to created
+ * @returns An object of the Uint8Array of indices representing the cards and the 'given'
+ */
 export function decksBuilder(given: number[], numberOfDecks?: number): {
   cards: Uint8Array;
   given: Uint8Array;
 };
+
+/**
+ * Utility function to create standard decks of cards 
+ * @param numberOfDecks Optional number of decks to created
+ * @returns An Uint8Array of indices representing standard decks of cards
+ */
 export function decksBuilder(numberOfDecks?: number): Uint8Array;
+
 export function decksBuilder(givenOrNumberOfDecks: number | number[] = 1, numberOfDecks = 1): {
   cards: Uint8Array;
   given: Uint8Array;

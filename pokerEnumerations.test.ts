@@ -3,14 +3,11 @@ import { expect } from "jsr:@std/expect";
 
 import { IndicesBuilder } from "./IndicesBuilder.ts";
 import { numberOfWays_UsingIndices } from "./numberOfWays.ts";
-import { pokerEnumerations } from "./pokerEnumerations.ts";
+import { decksBuilder, pokerEnumerations } from "./pokerEnumerations.ts";
 
 describe("pokerEnumerations", () => {
   describe("Number of poker specific hands", () => {
-    const numberOfDecks = 1;
-    // TypedArray [0, 1, 2, ... 51] * numberOfDecks
-    const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
-
+    const cards = decksBuilder();
     const enumerations = pokerEnumerations(IndicesBuilder(cards, 13));  // 13 'kinds' of cards
 
     Deno.test("numberOfStraightFlushes", () => {
@@ -27,8 +24,7 @@ describe("pokerEnumerations", () => {
   });
 
   describe("All poker hands", () => {
-    const cards = new Uint8Array(52).map((_, index) => index % 52);
-
+    const cards = decksBuilder();
     const indices = IndicesBuilder(cards, 13); // 13 'kinds' of cards
     const select = numberOfWays_UsingIndices({ ...indices, numberToPick: 5 });
     const enumerations = pokerEnumerations(indices);
@@ -74,10 +70,7 @@ describe("pokerEnumerations", () => {
   });
 
   describe("Poker hands given Ace King", () => {
-    const cards = new Uint8Array(52)
-      .map((_, index) => index)
-      .filter(card => card !== 0 && card !== 12)                    // Leave out 0 and 12 as they are 'given'
-
+    const { cards } = decksBuilder([0, 12]);                        // Leave out 0 and 12 as they are 'given'
     // 13 'kinds' of cards, given A K
     const enumerations = pokerEnumerations(IndicesBuilder(cards, 13, new Uint8Array([0, 12])));
 
@@ -95,10 +88,7 @@ describe("pokerEnumerations", () => {
   });
 
   describe("Poker hands given Ace King, with a cycle of 5", () => {
-    const cards = new Uint8Array(52)
-      .map((_, index) => index)
-      .filter(card => card !== 0 && card !== 12)                    // Leave out 0 and 12 as they are 'given'
-
+    const { cards } = decksBuilder([0, 12]);                        // Leave out 0 and 12 as they are 'given'
     const enumerations = pokerEnumerations({ ...IndicesBuilder(cards, 13, new Uint8Array([0, 12])), cycle: 5 });
 
     Deno.test("numberOfStraightFlushes", () => {
@@ -119,10 +109,7 @@ describe("pokerEnumerations", () => {
   });
 
   describe("Unable to make hands due to given cards (2 Aces)", () => {
-    const cards = new Uint8Array(52)
-      .map((_, index) => index)
-      .filter(card => card !== 0 && card !== 13)                    // Leave out 2 Aces 'given'
-
+    const { cards } = decksBuilder([0, 13]);                        // Leave out 2 Aces 'given'
     // 13 'kinds' of cards, given 2 Aces
     const enumerations = pokerEnumerations(IndicesBuilder(cards, 13, new Uint8Array([0, 13])));
 

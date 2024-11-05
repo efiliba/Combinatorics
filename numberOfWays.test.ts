@@ -43,7 +43,7 @@ describe("numberOfWays", () => {
   });
 
   describe("Standard deck of cards, with hand already containing an Ace King", () => {
-    const { given, cards } = decksBuilder([0, 12]);   // Suited Ace and King at indices 0 and 12
+    const { cards, given } = decksBuilder([0, 12]);   // Suited Ace and King at indices 0 and 12
 
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
     const select = numberOfWays(cards, 13, 5, given); // 13 'kinds' of cards, with 5 card hands
@@ -126,7 +126,7 @@ describe("numberOfWays_UsingIndices", () => {
   });
 
   describe("Standard deck of cards, with hand already containing an Ace King", () => {
-    const { given, cards } = decksBuilder([0, 12]);       // Suited Ace and King at indices 0 and 12
+    const { cards, given } = decksBuilder([0, 12]);       // Suited Ace and King at indices 0 and 12
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
     const { columns, rows, fromGrid, givenGrid } = IndicesBuilder(cards, 13, given); // 13 'kinds' of cards
     const select = numberOfWays_UsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
