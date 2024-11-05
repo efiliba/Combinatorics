@@ -13,7 +13,7 @@ important).
 
 Example: select 2 people from the 3 options:
 
-```TypeScript
+```ts
 import { combinations } from "Combinations";
 
 const from = [
@@ -37,7 +37,7 @@ important).
 
 Example: all the ways to select 3 people from the 3 options:
 
-```TypeScript
+```ts
 import { permutations } from "Permutations";
 
 const from = [
@@ -65,7 +65,7 @@ Example: from a standard deck of cards, with the hand already containing an Ace
 and King, determine the number of 4 of a kinds. I.e. so you only have 3 cards
 left to draw.
 
-```TypeScript
+```ts
 import { numberOfWays } from "@elf/combinatorics";
 
 const given = new Uint8Array([0, 12]); // Suited Ace and King at indices 0 and 12
@@ -107,7 +107,7 @@ Various bit utilities, such as, population count and XOR bits
 
 Examples:
 
-```TypeScript
+```ts
 import {
   bitwiseOR,
   containingBitIndex,

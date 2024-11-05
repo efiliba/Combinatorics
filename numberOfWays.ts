@@ -85,19 +85,27 @@ export const numberOfWaysUsingIndices = ({ columns, rows, fromGrid, givenGrid, n
 
 /**
  * Get the total number of ways that items can be selected (order not important)
- * @param from - Uint8Array of items to select 'from'
- * - Example decks of cards new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52)
- * -   Duplicate values to add multiples
- * -   Leave out unwanted items
- * @param numberOfColumns - group items by 'kinds'
- * - Example 13 for a standard deck of cards
- * @param numberToPick - number of items to pick
- * - Example 5 for a card 'hand'
- * @param given (optional) - Uint8Array of items that must be included
- * - Example 'given' suited (on same row) Ace King: new Uint8Array([0, 12]))
+ * @param from An Uint8Array of items to select 'from'
+ * - Duplicate values to add multiples
+ * - Leave out unwanted items
+ * @example multiple decks of cards 
+ * ```ts
+ * new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52)
+ * ```
+ * @param numberOfColumns The number of groups of items e.g. 'kinds' of cards A, 2, 3, ...
+ * @example 13 for a standard deck of cards
+ * @param numberToPick The number of items to pick
+ * @example 5 for a card 'hand'
+ * @param given (optional) An Uint8Array of items that must be included
+ * @example 'given' Ace King - suited (on same row)
+ * ```ts
+ * new Uint8Array([0, 12]))
+ * ```
  * @returns function that returns the number of ways of selecting n1 items, followed by n2 items, ...
- * - Example number of FullHouses select([3, 2])
- * --  Select 3 of a kind and then 2 of a kind from the remaining cards
+ * @example number of Full Houses - Select 3 of a kind and then 2 of a kind from the remaining cards
+ * ```ts
+ * select([3, 2])
+ * ``` 
  */
 export const numberOfWays = (
   from: Uint8Array,

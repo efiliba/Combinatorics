@@ -10,12 +10,46 @@ type PokerEnumerations = {
   cycle?: number;                         // Number of items to cycle e.g. J Q K A 2
 };
 
-export const pokerEnumerations = ({ columns, rows, fromGrid, givenGrid, numberToPick = 5, cycle = 1 }: PokerEnumerations): {
+function isGiven(givenOrNumberOfDecks: number | number[]): givenOrNumberOfDecks is number[] {
+  return typeof givenOrNumberOfDecks === "object";
+}
+
+export function decksBuilder(given: number[], numberOfDecks?: number): {
+  cards: Uint8Array;
+  given: Uint8Array;
+};
+export function decksBuilder(numberOfDecks?: number): Uint8Array;
+export function decksBuilder(givenOrNumberOfDecks: number | number[] = 1, numberOfDecks = 1): {
+  cards: Uint8Array;
+  given: Uint8Array;
+} | Uint8Array {
+  if (isGiven(givenOrNumberOfDecks)) {
+    const exclude = new Uint8Array(givenOrNumberOfDecks);
+
+    return {
+      cards: new Uint8Array(52 * numberOfDecks)
+        .map((_, index) => index % 52)
+        .filter(card => !exclude.includes(card)),
+      given: exclude
+    };
+  }
+
+  return new Uint8Array(52 * givenOrNumberOfDecks).map((_, index) => index % 52);
+};
+
+export const pokerEnumerations = ({
+  columns,
+  rows,
+  fromGrid,
+  givenGrid,
+  numberToPick = 5,
+  cycle = 1
+}: PokerEnumerations): {
   numberOfStraights: () => number;
   numberOfFlushes: () => number;
   numberOfStraightFlushes: () => number;
 } => {
-  const numberOfConsecutive = numberOfConsecutiveUsingIndices({ columns, rows, givenGrid, numberToPick, cycle })
+  const numberOfConsecutive = numberOfConsecutiveUsingIndices({ columns, rows, givenGrid, numberToPick, cycle });
 
   const suitToCheck = () => {             // Only check suit of any given indice
     let suitNumber = rows - 1;

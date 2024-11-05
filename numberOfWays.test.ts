@@ -3,13 +3,11 @@ import { expect } from "jsr:@std/expect";
 
 import { IndicesBuilder } from "./IndicesBuilder.ts";
 import { numberOfWays, numberOfWaysUsingIndices } from "./numberOfWays.ts";
+import { decksBuilder } from "./pokerEnumerations.ts";
 
 describe("numberOfWays", () => {
   describe("Standard deck of cards", () => {
-    const numberOfDecks = 1;
-    // TypedArray [0, 1, 2, ... 51] * numberOfDecks
-    const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
-
+    const cards = decksBuilder();
     const select = numberOfWays(cards, 13, 5);  // 13 'kinds' of cards, with 5 card hands
 
     Deno.test("four of a kinds", () => {
@@ -45,10 +43,7 @@ describe("numberOfWays", () => {
   });
 
   describe("Standard deck of cards, with hand already containing an Ace King", () => {
-    const given = new Uint8Array([0, 12]);                // Suited Ace and King at indices 0 and 12
-    const cards = new Uint8Array(52)
-      .map((_, index) => index)
-      .filter(card => !given.includes(card))              // Leave out 0 and 12 as they are 'given'
+    const { given, cards } = decksBuilder([0, 12]);   // Suited Ace and King at indices 0 and 12
 
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
     const select = numberOfWays(cards, 13, 5, given); // 13 'kinds' of cards, with 5 card hands
@@ -67,9 +62,7 @@ describe("numberOfWays", () => {
   });
 
   describe("2 decks of cards", () => {
-    const numberOfDecks = 2;
-    const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
-
+    const cards = decksBuilder(2);
     const select = numberOfWays(cards, 13, 5);  // 13 'kinds' of cards, with 5 card hands
 
     Deno.test("5 of a kind", () => {
@@ -96,10 +89,7 @@ describe("numberOfWays", () => {
 
 describe("numberOfWaysUsingIndices", () => {
   describe("Standard deck of cards", () => {
-    const numberOfDecks = 1;
-
-    const cards = new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52);
-
+    const cards = decksBuilder();
     const { columns, rows, fromGrid, givenGrid } = IndicesBuilder(cards, 13); // 13 'kinds' of cards
     const select = numberOfWaysUsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
 
@@ -136,11 +126,7 @@ describe("numberOfWaysUsingIndices", () => {
   });
 
   describe("Standard deck of cards, with hand already containing an Ace King", () => {
-    const given = new Uint8Array([0, 12]);                // Suited Ace and King at indices 0 and 12
-    const cards = new Uint8Array(52)
-      .map((_, index) => index)
-      .filter(card => !given.includes(card))              // Leave out 0 and 12 as they are 'given'
-
+    const { given, cards } = decksBuilder([0, 12]);       // Suited Ace and King at indices 0 and 12
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
     const { columns, rows, fromGrid, givenGrid } = IndicesBuilder(cards, 13, given); // 13 'kinds' of cards
     const select = numberOfWaysUsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
