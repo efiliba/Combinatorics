@@ -13,6 +13,24 @@ const removeItemAtIndex = <T>(items: T[], index: number) => {
   return remainingItems;
 };
 
+/**
+ * Generates a 2D array of all the permutations that may be selected (order important)
+ * @param from An array of items to select the permutations 'from'
+ * @returns A 2D array of the unique permutations
+ * @example
+ * ```ts
+ * const from = [1, 2, 3];
+ * permutations(from);
+ * // [
+ * //   [1, 2, 3],
+ * //   [1, 3, 2],
+ * //   [2, 1, 3],
+ * //   [2, 3, 1],
+ * //   [3, 1, 2],
+ * //   [3, 2, 1]
+ * // ]
+ * ```
+ */
 export const permutations = <T>(from: T[]): T[] | T[][] =>
   from.length === 1
     ? from

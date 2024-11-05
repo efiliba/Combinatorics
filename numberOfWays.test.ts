@@ -2,7 +2,7 @@ import { describe } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 
 import { IndicesBuilder } from "./IndicesBuilder.ts";
-import { numberOfWays, numberOfWaysUsingIndices } from "./numberOfWays.ts";
+import { numberOfWays, numberOfWays_UsingIndices } from "./numberOfWays.ts";
 import { decksBuilder } from "./pokerEnumerations.ts";
 
 describe("numberOfWays", () => {
@@ -87,11 +87,11 @@ describe("numberOfWays", () => {
   });
 });
 
-describe("numberOfWaysUsingIndices", () => {
+describe("numberOfWays_UsingIndices", () => {
   describe("Standard deck of cards", () => {
     const cards = decksBuilder();
     const { columns, rows, fromGrid, givenGrid } = IndicesBuilder(cards, 13); // 13 'kinds' of cards
-    const select = numberOfWaysUsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
+    const select = numberOfWays_UsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
 
     Deno.test("four of a kinds", () => {
       // Select 4 of a kind and then explicitly select 1 of a kind from the remaining cards
@@ -129,7 +129,7 @@ describe("numberOfWaysUsingIndices", () => {
     const { given, cards } = decksBuilder([0, 12]);       // Suited Ace and King at indices 0 and 12
     // Setup with 13 different 'kinds' i.e. A, 2, 3, ..., K in 4 suits, with given cards e.g. A K (suited)
     const { columns, rows, fromGrid, givenGrid } = IndicesBuilder(cards, 13, given); // 13 'kinds' of cards
-    const select = numberOfWaysUsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
+    const select = numberOfWays_UsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
 
     Deno.test("full Houses", () => {
       // Select 2 Aces from 3 remaining = C(3, 2) = 3 and 1 King from 3 remaining = C(3, 1) = 3
@@ -149,7 +149,7 @@ describe("numberOfWaysUsingIndices", () => {
     //  7  8  9 10 11 12
     // 13 14 15 16 17 18
     const dice = new Uint8Array(18).map((_, index) => index);
-    const select = numberOfWaysUsingIndices(IndicesBuilder(dice, 6));
+    const select = numberOfWays_UsingIndices(IndicesBuilder(dice, 6));
 
     Deno.test("all dice have the same value i.e. 3 of a kind", () => {
       expect(select(3)).toEqual(6);

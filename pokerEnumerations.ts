@@ -1,5 +1,5 @@
 import { C } from "./Utils.ts";
-import { numberOfConsecutiveUsingIndices } from "./numberOfConsecutive.ts";
+import { numberOfConsecutive_UsingIndices } from "./numberOfConsecutive.ts";
 
 type PokerEnumerations = {
   columns: number;                        // Number of indices to group the grids by i.e. 13 'kinds' in a deck of cards
@@ -49,7 +49,7 @@ export const pokerEnumerations = ({
   numberOfFlushes: () => number;
   numberOfStraightFlushes: () => number;
 } => {
-  const numberOfConsecutive = numberOfConsecutiveUsingIndices({ columns, rows, givenGrid, numberToPick, cycle });
+  const numberOfConsecutive = numberOfConsecutive_UsingIndices({ columns, rows, givenGrid, numberToPick, cycle });
 
   const suitToCheck = () => {             // Only check suit of any given indice
     let suitNumber = rows - 1;

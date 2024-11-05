@@ -4,7 +4,8 @@ Various algorithms for enumerating / counting collections implemented in
 TypeScript.
 
 The algorithms are generic but were developed for poker hands with multiple
-decks and with missing cards. You can also set 'given' cards.
+decks and / or missing cards. 'given' cards can be set, to be included in the
+results.
 
 ## Combinations.ts
 
@@ -14,7 +15,7 @@ important).
 Example: select 2 people from the 3 options:
 
 ```ts
-import { combinations } from "Combinations";
+import { combinations } from "@elf/combinatorics";
 
 const from = [
   { name: "Tom", age: 20 },
@@ -38,7 +39,7 @@ important).
 Example: all the ways to select 3 people from the 3 options:
 
 ```ts
-import { permutations } from "Permutations";
+import { permutations } from "@elf/combinatorics";
 
 const from = [
   { name: "Tom", age: 20 },

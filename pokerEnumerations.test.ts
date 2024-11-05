@@ -2,7 +2,7 @@ import { describe } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 
 import { IndicesBuilder } from "./IndicesBuilder.ts";
-import { numberOfWaysUsingIndices } from "./numberOfWays.ts";
+import { numberOfWays_UsingIndices } from "./numberOfWays.ts";
 import { pokerEnumerations } from "./pokerEnumerations.ts";
 
 describe("pokerEnumerations", () => {
@@ -30,7 +30,7 @@ describe("pokerEnumerations", () => {
     const cards = new Uint8Array(52).map((_, index) => index % 52);
 
     const indices = IndicesBuilder(cards, 13); // 13 'kinds' of cards
-    const select = numberOfWaysUsingIndices({ ...indices, numberToPick: 5 });
+    const select = numberOfWays_UsingIndices({ ...indices, numberToPick: 5 });
     const enumerations = pokerEnumerations(indices);
 
     const hands = {

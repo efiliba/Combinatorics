@@ -23,8 +23,12 @@ const countConsecutive = (columns: number, fromArr: Uint8Array, givenArr: Uint8A
     return total;
   };
 
-// Count number of consecutive indices
-export const numberOfConsecutiveUsingIndices = ({
+/**
+ * Internal function to count the number of consecutive indices
+ * @param param0 Options created by internal IndicesBuilder
+ * @returns A curried function to get the number of consecutive items
+ */
+export const numberOfConsecutive_UsingIndices = ({
   columns,
   rows,
   givenGrid,

@@ -69,7 +69,22 @@ const repeatedPicks = (pick: Uint8Array) => {
   return total;
 };
 
-export const numberOfWaysUsingIndices = ({ columns, rows, fromGrid, givenGrid, numberToPick = rows }: {
+/**
+ * Optimised version (re-using IndicesBuilder) to get the total of the number of ways to select items
+ * @param columns The number of indices to partition the grids by i.e. 13 'kinds' in a deck
+ * @param rows The number of indices to partition the items into i.e. 4 'suits' in a deck
+ * @param fromGrid A 2D grid of Uint8Array[] options to select from
+ * @param givenGrid A 2D grid of Uint8Array[] indices that must be included in results
+ * @param numberToPick The number of items to pick
+ * @returns curried function for the number of ways of selecting n1 items, followed by n2, ...
+ * @example
+ * ```ts
+ * const cards = decksBuilder(); // Utility function to create a deck
+ * const { columns, rows, fromGrid, givenGrid } = IndicesBuilder(cards, 13);
+ * const select = numberOfWays_UsingIndices({ columns, rows, fromGrid, givenGrid, numberToPick: 5 });
+ * ```
+ */
+export const numberOfWays_UsingIndices = ({ columns, rows, fromGrid, givenGrid, numberToPick = rows }: {
   columns: number;
   rows: number;
   fromGrid: Uint8Array[];
@@ -92,7 +107,7 @@ export const numberOfWaysUsingIndices = ({ columns, rows, fromGrid, givenGrid, n
  * ```ts
  * new Uint8Array(52 * numberOfDecks).map((_, index) => index % 52)
  * ```
- * @param numberOfColumns The number of groups of items e.g. 'kinds' of cards A, 2, 3, ...
+ * @param numberOfColumns The number of groups of items e.g. 'kinds' of cards A, 2, ...
  * @example 13 for a standard deck of cards
  * @param numberToPick The number of items to pick
  * @example 5 for a card 'hand'
@@ -101,7 +116,7 @@ export const numberOfWaysUsingIndices = ({ columns, rows, fromGrid, givenGrid, n
  * ```ts
  * new Uint8Array([0, 12]))
  * ```
- * @returns function that returns the number of ways of selecting n1 items, followed by n2 items, ...
+ * @returns function that returns the number of ways of selecting n1 items, followed by n2, ...
  * @example number of Full Houses - Select 3 of a kind and then 2 of a kind from the remaining cards
  * ```ts
  * select([3, 2])
@@ -113,4 +128,4 @@ export const numberOfWays = (
   numberToPick = from.length / numberOfColumns, // Default - select all i.e. row
   given: Uint8Array = new Uint8Array()
 ): (args: number | number[]) => number =>
-  numberOfWaysUsingIndices({ ...IndicesBuilder(from, numberOfColumns, given), numberToPick });
+  numberOfWays_UsingIndices({ ...IndicesBuilder(from, numberOfColumns, given), numberToPick });

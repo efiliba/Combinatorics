@@ -1,7 +1,7 @@
 import { describe } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 
-import { combinations, combinationsReusingIndex } from "./Combinations.ts";
+import { combinations, combinations_ReusingIndex } from "./Combinations.ts";
 
 describe("Combinations", () => {
   describe("C(from, pick)", () => {
@@ -51,9 +51,9 @@ describe("Combinations", () => {
     });
   });
 
-  describe("combinationsReusingIndex", () => {
-    const combinations = combinationsReusingIndex(4);
-    const select = combinations(["a", "b", "c", "d"]);
+  describe("combinations_ReusingIndex", () => {
+    const combinations = combinations_ReusingIndex(4);
+    let select = combinations(["a", "b", "c", "d"]);
 
     Deno.test("C(4, 1) = 4", () => {
       const pick = 1;
@@ -105,6 +105,33 @@ describe("Combinations", () => {
       const actual = select(pick);
       const expected = [
         ["a", "b", "c", "d"]
+      ];
+
+      expect(actual).toEqual(expected);
+    });
+
+    Deno.test("Reuse combinations", () => {
+      const pick = 2;
+
+      let actual = select(pick);
+      let expected = [
+        ["a", "b"],
+        ["a", "c"],
+        ["b", "c"],
+        ["a", "d"],
+        ["b", "d"],
+        ["c", "d"]
+      ];
+
+      expect(actual).toEqual(expected);
+
+      select = combinations(["a", "b", "c"]);
+
+      actual = select(pick);
+      expected = [
+        ["a", "b"],
+        ["a", "c"],
+        ["b", "c"]
       ];
 
       expect(actual).toEqual(expected);

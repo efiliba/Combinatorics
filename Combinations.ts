@@ -61,11 +61,56 @@ const enumerateCombinations = (setBitsLookup: number[][]) =>
       return combinations;
     };
 
-export const combinationsReusingIndex = (maxItemsToSelectFrom: number):
+/**
+ * Optimised version for selecting unique combinations
+ * - Useful when needing to change the options to select from
+ * @param maxItemsToSelectFrom The maximum number of items that may be selected
+ * @returns A curried function requiring the options to select 'from' before passing in the number of objects to pick
+ * @example
+ * ```ts
+ * const combinations = combinations_ReusingIndex(4);
+ * let select = combinations(["a", "b", "c", "d"]);
+ * select(2); // C(4, 2)
+ * // [
+ * //   ["a", "b"],
+ * //   ["a", "c"],
+ * //   ["b", "c"],
+ * //   ["a", "d"],
+ * //   ["b", "d"],
+ * //   ["c", "d"]
+ * // ];
+ * 
+ * select = combinations(["a", "b", "c"]); // Re-use combinations
+ * select(2); // C(3, 2)
+ * // [
+ * //   ["a", "b"],
+ * //   ["a", "c"],
+ * //   ["b", "c"]
+ * // ];
+ * ```
+ */
+export const combinations_ReusingIndex = (maxItemsToSelectFrom: number):
   <T>(from: T[]) => (pick: number) => T[][] => {
   const populationCounts = createIndexedPopulationCountsTable(maxItemsToSelectFrom);
   return enumerateCombinations(populationCounts);
 };
 
+/**
+ * Generates a 2D array of all the combinations that may be selected (order not important)
+ * @param from An array of items to select the combinations 'from'
+ * @param pick The number of items to pick for each combination
+ * @returns A 2D array of the unique combinations
+ * @example
+ * ```ts
+ * const from = ["a", "b", "c", "d"];
+ * const pick = 3;
+ * combinations(from, pick);
+ * // [
+ * //   [ "a", "b", "c" ],
+ * //   [ "a", "b", "d" ],
+ * //   [ "a", "c", "d" ],
+ * //   [ "b", "c", "d" ]
+ * // ]
+ */
 export const combinations = <T>(from: T[], pick: number): T[][] =>
-  combinationsReusingIndex(from.length)(from)(pick);
+  combinations_ReusingIndex(from.length)(from)(pick);
