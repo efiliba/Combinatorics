@@ -18,14 +18,18 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Use Deno 2
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
-      - uses: pnpm/action-setup@v4
+      - name: Instal pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
       - name: Run CI
         run: pnpm run ci
