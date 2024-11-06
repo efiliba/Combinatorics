@@ -31,5 +31,8 @@ jobs:
         with:
           version: latest
 
+      - name: Instal dependencies
+        run: pnpm i
+
       - name: Run CI
         run: pnpm run ci
