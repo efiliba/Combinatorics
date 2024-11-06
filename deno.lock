@@ -30,5 +30,13 @@
         "jsr:@std/internal"
       ]
     }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@arethetypeswrong/cli@~0.16.4",
+        "npm:typescript@^5.6.3"
+      ]
+    }
   }
 }

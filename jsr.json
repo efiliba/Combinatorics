@@ -1,7 +1,17 @@
 {
   "name": "@elf/combinatorics",
-  "version": "1.0.5",
-  "exports": "./index.ts",
+  "version": "1.0.6",
+  "exports": {
+    ".": "./index.ts",
+    "./Combinations": "./Combinations.ts",
+    "./Permutations": "./Permutations.ts",
+    "./IndicesBuilder": "./IndicesBuilder.ts",
+    "./numberOfWays": "./numberOfWays.ts",
+    "./numberOfConsecutive": "./numberOfConsecutive.ts",
+    "./pokerEnumerations": "./pokerEnumerations.ts",
+    "./BitUtils": "./BitUtils.ts",
+    "./Utils": "./Utils.ts"
+  },
   "publish": {
     "include": [
       "LICENSE",

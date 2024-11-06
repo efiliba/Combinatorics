@@ -7,6 +7,14 @@ The algorithms are generic but were developed for poker hands with multiple
 decks and / or missing cards. 'given' cards can be set, to be included in the
 results.
 
+## Getting Started
+
+Instal from [jsr](https://jsr.io)
+
+```bash
+npx jsr add @elf/combinatorics
+```
+
 ## Combinations
 
 Generates a 2D array of all the combinations that may be selected (order not
