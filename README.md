@@ -23,7 +23,7 @@ important).
 Example: select 2 people from the 3 options:
 
 ```ts
-import { combinations } from "@elf/combinatorics";
+import { combinations } from "@elf/combinatorics/Combinations";
 
 const from = [
   { name: "Tom", age: 20 },
@@ -47,7 +47,7 @@ important).
 Example: all the ways to select 3 people from the 3 options:
 
 ```ts
-import { permutations } from "@elf/combinatorics";
+import { permutations } from "@elf/combinatorics/Permutations";
 
 const from = [
   { name: "Tom", age: 20 },
@@ -75,7 +75,7 @@ To calculate the number of different poker hands use numberOfWays for all the
 Utility function to create decks of cards.
 
 ```ts
-import { decksBuilder } from "@elf/combinatorics";
+import { decksBuilder } from "@elf/combinatorics/pokerEnumerations";
 
 const cards = decksBuilder(); // Standard deck of cards
 // Uint8Array(52) [
@@ -98,7 +98,8 @@ Get the total number of ways that distinct items can be selected (order not
 important).
 
 ```ts
-import { decksBuilder, numberOfWays } from "@elf/combinatorics";
+import { decksBuilder } from "@elf/combinatorics/pokerEnumerations";
+import { numberOfWays } from "@elf/combinatorics/numberOfWays";
 
 const cards = decksBuilder(); // Standard deck of cards
 const select = numberOfWays(cards, 13, 5); // 13 'kinds' of cards, with 5 card hands
@@ -167,10 +168,10 @@ structure. Which is also created separately by the IndicesBuilder utility.
 ```ts
 import {
   decksBuilder,
-  IndicesBuilder,
-  numberOfWays_UsingIndices,
   pokerEnumerations,
-} from "@elf/combinatorics";
+} from "@elf/combinatorics/pokerEnumerations";
+import { numberOfWays_UsingIndices } from "@elf/combinatorics/numberOfWays";
+import { IndicesBuilder } from "@elf/combinatorics/IndicesBuilder";
 
 const cards = decksBuilder(); // Standard deck of cards
 const indices = IndicesBuilder(cards, 13); // 13 'kinds' of cards
@@ -204,7 +205,7 @@ import {
   containingBitIndex,
   numberOfBitsSet,
   onlyOption,
-} from "@elf/combinatorics";
+} from "@elf/combinatorics/BitUtils";
 
 numberOfBitsSet(333) === 5; // Population count i.e. 333 = 101001101 i.e. 5 bits set
 

@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches:
       - main
@@ -14,11 +13,15 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Use Deno 2
-      uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
