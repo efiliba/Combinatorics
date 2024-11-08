@@ -1,4 +1,5 @@
 name: Publish
+
 on:
   push:
     branches:
@@ -13,7 +14,8 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Publish package
         run: npx jsr publish
