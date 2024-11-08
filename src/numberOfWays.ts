@@ -1,5 +1,5 @@
-import { C } from "./Utils.js";
-import { IndicesBuilder } from "./IndicesBuilder.js";
+import { C } from "./Utils.ts";
+import { IndicesBuilder } from "./IndicesBuilder.ts";
 
 // Pad args e.g. 4 => [4, 1] i.e. pick 4 of a kind and then 1 of a kind from remaining options
 const formatPicked = (numberToPick: number, args: number | number[]) => {

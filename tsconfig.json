@@ -8,6 +8,8 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "strict": true,
     "noUncheckedIndexedAccess": false,
     "noImplicitOverride": true,
@@ -19,8 +21,5 @@
     "declarationMap": true,
     "lib": ["es2022"]
   },
-  "exclude": [
-    "src/index.ts",
-    "src/*.test.ts"
-  ]
+  "exclude": ["src/*.test.ts"]
 }
