@@ -8,21 +8,19 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
     "strict": true,
     "noUncheckedIndexedAccess": false,
     "noImplicitOverride": true,
     "module": "NodeNext",
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "lib": ["es2022"]
   },
   "exclude": [
-    "index.ts",
-    "*.test.ts"
+    "src/index.ts",
+    "src/*.test.ts"
   ]
 }

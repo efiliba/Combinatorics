@@ -1,5 +1,5 @@
-import { C } from "./Utils.ts";
-import { numberOfConsecutive_UsingIndices } from "./numberOfConsecutive.ts";
+import { C } from "./Utils.js";
+import { numberOfConsecutive_UsingIndices } from "./numberOfConsecutive.js";
 
 type PokerEnumerations = {
   columns: number;                        // Number of indices to group the grids by i.e. 13 'kinds' in a deck of cards

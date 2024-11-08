@@ -1,3 +1,4 @@
-node_modules
-cov_profile
-dist
+.DS_Store
+/node_modules
+/cov_profile
+/dist
