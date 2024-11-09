@@ -1,6 +1,6 @@
 {
   "name": "@elf/combinatorics",
-  "version": "1.0.9",
+  "version": "1.0.14",
   "exports": {
     ".": "./src/index.ts",
     "./Combinations": "./src/Combinations.ts",
